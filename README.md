@@ -103,4 +103,4 @@ MIT License - feel free to use and modify as needed.
 
 ## Support
 
-For issues or questions, please open a GitHub issue or contact the maintainers.
+For issues or questions, please open a GitHub issue or contact to me directly [sourjya.mukherji@gmail.com](mailto:sourjya.mukherji@gmail.com).
