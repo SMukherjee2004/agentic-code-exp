@@ -21,6 +21,24 @@ An intelligent AI-powered tool that analyzes GitHub repositories, generates comp
 
 ## Setup
 
+### Option 1: Docker (Recommended)
+
+1. **Quick start with Docker Compose**
+```bash
+git clone <your-repo-url>
+cd ai-github-code-analyzer
+cp .env.example .env
+# Edit .env file and add your OPENROUTER_API_KEY
+docker-compose up -d
+```
+
+2. **Access the application**
+Open your browser and go to `http://localhost:8501`
+
+📖 **For detailed Docker instructions, see [DOCKER.md](DOCKER.md)**
+
+### Option 2: Local Installation
+
 1. **Clone this repository**
 ```bash
 git clone <your-repo-url>

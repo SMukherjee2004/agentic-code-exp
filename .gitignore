@@ -74,4 +74,3 @@ repos/
 *.log
 temp/
 cache/
-qa_agent_analysis
