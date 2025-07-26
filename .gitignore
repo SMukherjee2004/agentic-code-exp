@@ -74,3 +74,5 @@ repos/
 *.log
 temp/
 cache/
+
+.dockerignore/
