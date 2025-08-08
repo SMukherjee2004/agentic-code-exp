@@ -163,26 +163,96 @@ def main():
     with tab5:
         export_reports_tab()
 
+# def repository_input_tab(api_key, selected_model, max_files):
+#     """Repository input and analysis tab."""
+#     st.header("📥 Repository Analysis")
+    
+#     # URL input
+#     col1, col2 = st.columns([3, 1])
+
+#     # if "repo_url" not in st.session_state:
+#     #     st.session_state.repo_url = ""
+    
+#     # with col1:
+#     #     # repo_url = st.text_input(
+#     #     #     "GitHub Repository URL",
+#     #     #     placeholder="https://github.com/owner/repository",
+#     #     #     help="Enter a public GitHub repository URL"
+#     #     # )
+#     #     repo_url = st.text_input(
+#     #     "GitHub Repository URL",
+#     #     value=st.session_state.repo_url,
+#     #     placeholder="https://github.com/owner/repository",
+#     #     help="Enter a public GitHub repository URL",
+#     #     key="repo_url"
+#     # )
+#     # with col2:
+#     #     st.markdown("<br>", unsafe_allow_html=True)
+#     #     analyze_button = st.button("🔍 Analyze Repository", type="primary")
+
+#     # Bind the text input to session state
+#     if "repo_url" not in st.session_state:
+#         st.session_state.repo_url = ""
+
+#     # Example repositories
+#     st.subheader("📚 Example Repositories")
+#     example_repos = [
+#         "https://github.com/microsoft/vscode",
+#         "https://github.com/facebook/react",
+#         "https://github.com/tensorflow/tensorflow",
+#         "https://github.com/django/django",
+#         "https://github.com/fastapi/fastapi"
+#     ]
+    
+#     example_cols = st.columns(len(example_repos))
+#     for i, repo in enumerate(example_repos):
+#         with example_cols[i]:
+#             repo_name = repo.split('/')[-1]
+#             if st.button(f"📦 {repo_name}", key=f"example_{i}"):
+#                 st.session_state.example_url = repo
+#                 st.rerun()
+    
+#     # # Use example URL if selected
+#     # if hasattr(st.session_state, 'example_url'):
+#     #     repo_url = st.session_state.example_url
+#     #     delattr(st.session_state, 'example_url')
+    
+#     with col1:
+#         # repo_url = st.text_input(
+#         #     "GitHub Repository URL",
+#         #     placeholder="https://github.com/owner/repository",
+#         #     help="Enter a public GitHub repository URL"
+#         # )
+#         repo_url = st.text_input(
+#         "GitHub Repository URL",
+#         value=st.session_state.repo_url,
+#         placeholder="https://github.com/owner/repository",
+#         help="Enter a public GitHub repository URL",
+#         key="repo_url"
+#     )
+#     with col2:
+#         st.markdown("<br>", unsafe_allow_html=True)
+#         analyze_button = st.button("🔍 Analyze Repository", type="primary")
+
+
+#     # Analysis process
+#     if analyze_button and repo_url:
+#         if not api_key:
+#             st.error("⚠️ Please enter your OpenRouter API key in the sidebar.")
+#             return
+        
+#         perform_analysis(repo_url, api_key, selected_model, max_files)
+
+
 def repository_input_tab(api_key, selected_model, max_files):
     """Repository input and analysis tab."""
     st.header("📥 Repository Analysis")
-    
-    # URL input
-    col1, col2 = st.columns([3, 1])
-    
-    with col1:
-        repo_url = st.text_input(
-            "GitHub Repository URL",
-            placeholder="https://github.com/owner/repository",
-            help="Enter a public GitHub repository URL"
-        )
-    
-    with col2:
-        st.markdown("<br>", unsafe_allow_html=True)
-        analyze_button = st.button("🔍 Analyze Repository", type="primary")
-    
+
+    # Ensure session state key exists
+    if "repo_url" not in st.session_state:
+        st.session_state.repo_url = ""
+
     # Example repositories
-    st.subheader("📚 Example Repositories")
     example_repos = [
         "https://github.com/microsoft/vscode",
         "https://github.com/facebook/react",
@@ -190,26 +260,38 @@ def repository_input_tab(api_key, selected_model, max_files):
         "https://github.com/django/django",
         "https://github.com/fastapi/fastapi"
     ]
-    
+
+    # Place example repo buttons
+    st.subheader("📚 You may try with... ")
     example_cols = st.columns(len(example_repos))
     for i, repo in enumerate(example_repos):
         with example_cols[i]:
             repo_name = repo.split('/')[-1]
             if st.button(f"📦 {repo_name}", key=f"example_{i}"):
-                st.session_state.example_url = repo
+                # Set repo_url BEFORE text_input is rendered
+                st.session_state.repo_url = repo
                 st.rerun()
-    
-    # Use example URL if selected
-    if hasattr(st.session_state, 'example_url'):
-        repo_url = st.session_state.example_url
-        delattr(st.session_state, 'example_url')
-    
-    # Analysis process
+
+    # Now render text input AFTER possible updates from above
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        repo_url = st.text_input(
+            "GitHub Repository URL",
+            value=st.session_state.repo_url,
+            placeholder="https://github.com/owner/repository",
+            help="Enter a public GitHub repository URL",
+            key="repo_url"
+        )
+
+    with col2:
+        st.markdown("<br>", unsafe_allow_html=True)
+        analyze_button = st.button("🔍 Analyze Repository", type="primary")
+
+    # Analysis
     if analyze_button and repo_url:
         if not api_key:
             st.error("⚠️ Please enter your OpenRouter API key in the sidebar.")
             return
-        
         perform_analysis(repo_url, api_key, selected_model, max_files)
 
 def perform_analysis(repo_url, api_key, selected_model, max_files):
